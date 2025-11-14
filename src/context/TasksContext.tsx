@@ -13,6 +13,7 @@ interface TasksContextValue {
   updateTask: (id: string, patch: Partial<Task>) => void;
   deleteTask: (id: string) => void;
   undoDelete: () => void;
+  setLastDeleted: React.Dispatch<React.SetStateAction<Task | null>>; 
 }
 
 const TasksContext = createContext<TasksContextValue | undefined>(undefined);
