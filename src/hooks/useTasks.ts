@@ -153,16 +153,27 @@ export function useTasks(): UseTasksState {
     };
   }, [tasks]);
 
-  const addTask = useCallback((task: Omit<Task, "id"> & { id?: string }) => {
-    setTasks((prev) => {
-      const id = task.id ?? crypto.randomUUID();
-      const timeTaken = task.timeTaken <= 0 ? 1 : task.timeTaken; // auto-correct
-      const createdAt = new Date().toISOString();
-      const status = task.status;
-      const completedAt = status === "Done" ? createdAt : undefined;
-      return [...prev, { ...task, id, timeTaken, createdAt, completedAt }];
-    });
-  }, []);
+  const addTask = useCallback((task: Partial<Task>) => {
+  setTasks(prev => {
+    const id = task.id ?? crypto.randomUUID();
+
+    const newTask: Task = {
+      id,
+      title: task.title?.trim() ?? "Untitled Task",
+      revenue: typeof task.revenue === "number" ? task.revenue : 0,
+      timeTaken: typeof task.timeTaken === "number" && task.timeTaken > 0 ? task.timeTaken : 1,
+      priority: task.priority ?? "Medium",
+      status: task.status ?? "Todo",
+      notes: task.notes?.trim(),
+      createdAt: new Date().toISOString(),
+      completedAt:
+        task.status === "Done" ? new Date().toISOString() : undefined,
+    };
+
+    return [...prev, newTask];
+  });
+}, []);
+
 
   const updateTask = useCallback((id: string, patch: Partial<Task>) => {
     setTasks((prev) => {

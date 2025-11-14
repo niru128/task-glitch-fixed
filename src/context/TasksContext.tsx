@@ -9,13 +9,13 @@ interface TasksContextValue {
   derivedSorted: DerivedTask[];
   metrics: Metrics;
   lastDeleted: Task | null;
- addTask: (task: Partial<Task>) => void;
-
+  addTask: (task: Partial<Task>) => void;        // ✅ FIXED
   updateTask: (id: string, patch: Partial<Task>) => void;
   deleteTask: (id: string) => void;
   undoDelete: () => void;
-  setLastDeleted: React.Dispatch<React.SetStateAction<Task | null>>; 
+  setLastDeleted: React.Dispatch<React.SetStateAction<Task | null>>;
 }
+
 
 const TasksContext = createContext<TasksContextValue | undefined>(undefined);
 
