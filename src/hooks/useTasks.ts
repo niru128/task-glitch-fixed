@@ -19,7 +19,8 @@ interface UseTasksState {
   derivedSorted: DerivedTask[];
   metrics: Metrics;
   lastDeleted: Task | null;
-  addTask: (task: Omit<Task, "id"> & { id?: string }) => void;
+    addTask: (task: Partial<Task>) => void;
+
   updateTask: (id: string, patch: Partial<Task>) => void;
   deleteTask: (id: string) => void;
   undoDelete: () => void;
@@ -155,24 +156,24 @@ export function useTasks(): UseTasksState {
 
   const addTask = useCallback((task: Partial<Task>) => {
   setTasks(prev => {
-    const id = task.id ?? crypto.randomUUID();
+    const id = task.id ?? (typeof crypto !== 'undefined' && 'randomUUID' in crypto ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(16).slice(2)}`);
 
     const newTask: Task = {
       id,
-      title: task.title?.trim() ?? "Untitled Task",
-      revenue: typeof task.revenue === "number" ? task.revenue : 0,
+      title: (task.title ?? "Untitled Task").toString().trim(),
+      revenue: typeof task.revenue === "number" && Number.isFinite(task.revenue) ? task.revenue : 0,
       timeTaken: typeof task.timeTaken === "number" && task.timeTaken > 0 ? task.timeTaken : 1,
-      priority: task.priority ?? "Medium",
-      status: task.status ?? "Todo",
-      notes: task.notes?.trim(),
+      priority: (task.priority ?? "Medium") as Task["priority"],
+      status: (task.status ?? "Todo") as Task["status"],
+      notes: task.notes?.toString().trim(),
       createdAt: new Date().toISOString(),
-      completedAt:
-        task.status === "Done" ? new Date().toISOString() : undefined,
+      completedAt: (task.status === "Done") ? new Date().toISOString() : undefined,
     };
 
     return [...prev, newTask];
   });
 }, []);
+
 
 
   const updateTask = useCallback((id: string, patch: Partial<Task>) => {

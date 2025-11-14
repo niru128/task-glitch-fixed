@@ -16,7 +16,6 @@ interface TasksContextValue {
   setLastDeleted: React.Dispatch<React.SetStateAction<Task | null>>;
 }
 
-
 const TasksContext = createContext<TasksContextValue | undefined>(undefined);
 
 export function TasksProvider({ children }: { children: ReactNode }) {
