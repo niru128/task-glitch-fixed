@@ -6,19 +6,28 @@
     "module": "ESNext",
     "skipLibCheck": true,
     "jsx": "react-jsx",
-    "moduleResolution": "bundler",
+
+    "moduleResolution": "Node",    // FIX 1
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
+    "types": ["node"],             // FIX 2
+
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]
     }
   },
-  "include": ["src"],
-  "references": [{ "path": "./tsconfig.node.json" }]
-}
 
+  "include": [
+    "src",
+    "vite.config.ts"              // FIX 3
+  ],
+
+  "references": [
+    { "path": "./tsconfig.node.json" }
+  ]
+}
