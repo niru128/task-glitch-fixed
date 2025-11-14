@@ -6,13 +6,13 @@ import AddIcon from '@mui/icons-material/Add';
 import { DerivedTask, Task } from '@/types';
 import TaskForm from '@/components/TaskForm';
 import TaskDetailsDialog from '@/components/TaskDetailsDialog';
-
 interface Props {
   tasks: DerivedTask[];
   onAdd: (payload: Partial<Task>) => void;
   onUpdate: (id: string, patch: Partial<Task>) => void;
   onDelete: (id: string) => void;
 }
+
 
 
 export default function TaskTable({ tasks, onAdd, onUpdate, onDelete }: Props) {
@@ -32,6 +32,7 @@ export default function TaskTable({ tasks, onAdd, onUpdate, onDelete }: Props) {
   };
 
   const handleSubmit = (value: Partial<Task> & { id?: string }) => {
+
   if (value.id) {
     const { id, ...rest } = value;
     onUpdate(id, rest);
